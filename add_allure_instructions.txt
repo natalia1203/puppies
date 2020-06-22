@@ -1,0 +1,25 @@
+1. add gem "allure-cucumber" to gemfile
+2. execute bundle command
+3. add the line below to "support/env.rb":
+
+   require "allure-cucumber"
+
+4. configure allure in env.rb
+
+AllureCucumber.configure do |config|
+  config.results_directory = "/whatever/you/like"
+  config.clean_results_directory = true
+  config.logging_level = Logger::INFO
+  # these are used for creating links to bugs or test cases where {} is replaced with keys of relevant items
+  config.link_tms_pattern = "http://www.jira.com/browse/{}"
+  config.link_issue_pattern = "http://www.jira.com/browse/{}"
+end
+
+5. add the following line to cucumber.yml
+ --format AllureCucumber::CucumberFormatter --out report/allure-results
+
+6. run features
+bundle exec cucumber
+
+7. when tests finish, generate report executing the following command
+allure generate report/allure-results --clean
